@@ -1,10 +1,15 @@
 import { StatusBar } from 'expo-status-bar';
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { Image, StyleSheet, Text, View, Dimensions } from 'react-native';
 import { SimpleLineIcons } from '@expo/vector-icons';
 const sticker1 = require('./assets/image/sticker_picture_01.jpg');
 const sticker2 = require('./assets/image/sticker_picture_02.jpg');
 
 export default function App() {
+
+  const { width } = Dimensions.get("window");
+  const tablets = width <= 1000
+  const mobile = width <= 500;
+  
   return (
     <View style={styles.container}>
       <View style={styles.love_title_container}>
@@ -17,14 +22,16 @@ export default function App() {
             onPress={() => alert("menu")} />
         </Text>    
       </View>
-      <View style={styles.image_wrapper}>
-        <Image source={sticker1} style={{ width: "100%", height: "50%" }} />
-        <Image source={sticker2} style={{ width: "100%", height: "50%" }} />
+      <View style={(tablets) ? styles.image_wrapper : styles.image_wrapper_row}>
+        <Image source={sticker1} style={(tablets) ? styles.image_width_100 : styles.image_width_50} />
+        <Image source={sticker2} style={(tablets) ? styles.image_width_100 : styles.image_width_50} />
       </View>
       <StatusBar style="auto" />
     </View>
   );
 }
+
+const { width, height } = Dimensions.get("window");
 
 const styles = StyleSheet.create({
   container: {
@@ -61,6 +68,23 @@ const styles = StyleSheet.create({
 
   image_wrapper: {
     width: "100%",
-    height: 700,
-  }
+    height: height * 0.7,
+  },
+
+  image_wrapper_row: {
+    width: "100%",
+    height: height * 0.7,
+    display: "flex",
+    flexDirection: "row"
+  },
+
+  image_width_100: {
+    width: "100%",
+    height: "50%",
+  },
+
+  image_width_50: {
+    width: "50%",
+    height: "100%",
+  },
 });
